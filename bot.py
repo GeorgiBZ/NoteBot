@@ -9,6 +9,8 @@ import datetime
 import sqlite3
 import logging
 
+#Второй коммит
+
 # Создаем база данных
 database.create_table()
 
