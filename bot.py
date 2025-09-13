@@ -23,7 +23,7 @@ import sqlite3
 import logging
 from config_reader import config
 #Для логирования в файл mylog.log
-
+import re
 
 
 # Создаем базу данных
@@ -81,7 +81,9 @@ async def process_datetime(message: types.Message, state: FSMContext):
     global datetime_str
     try:
         datetime_str = message.text
-        datetime_obj = datetime.datetime.strptime(datetime_str, '%Y-%m-%d %H:%M')
+        if (re.match(r'\d{4}-\d{2}-\d{2} \d{2}:\d{2}', datetime_str) == None):
+            raise ValueError
+        #datetime_obj = datetime.datetime.strptime(datetime_str, '%Y-%m-%d %H:%M')
         await message.answer(f'💬 Введите текст заметки:')
         await States.waiting_for_note.set()
     except ValueError:
@@ -135,7 +137,7 @@ async def process_delete_note_id(message: types.Message, state: FSMContext):
         try:
             db.delete_note(int(note_id))
             await message.answer(f"🗑 Заметка с номером {note_id} удалена.", reply_markup=get_keyboard(1))
-            db.rebuild_ids()
+            #db.rebuild_ids()
             await state.finish()
         except Exception as e:
             await message.answer(f"❌ Ошибка при удалении заметки: {e}", reply_markup=get_keyboard(1))
@@ -158,8 +160,8 @@ async def notify_users():
                 await bot.send_message(user_id, f"🔔*Напоминание:* {note}", parse_mode = 'Markdown')
             cursor.execute("DELETE FROM notes WHERE datetime = ?", (now,))
             conn.commit()
-            db.rebuild_ids()
-        await asyncio.sleep(60)
+            #db.rebuild_ids()
+        await asyncio.sleep(180)
 
 # Запускаем бота
 if __name__ == '__main__':

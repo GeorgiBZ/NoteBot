@@ -73,5 +73,5 @@ def rebuild_ids():
         for row in rows:
             cursor.execute("UPDATE notes SET id = ? WHERE id = ?", (current_id, row[0]))
             current_id += 1
-        cursor.execute("UPDATE SQLITE_SEQUENCE SET seq = ? WHERE name = 'notes'", (current_id - 1,))
+        #cursor.execute("UPDATE SQLITE_SEQUENCE SET seq = ? WHERE name = 'notes'", (current_id - 1,))
         conn.commit()
