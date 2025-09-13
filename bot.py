@@ -1,32 +1,51 @@
 from aiogram import Bot, Dispatcher, types
+"""
+Объект Bot нужен для создания бота
+Объект Dispatcher нужен для обработки апдейтов и выбора обработчика
+types
+"""
 from aiogram.utils import executor
+#
 from aiogram.dispatcher import FSMContext
+#Импортируем конечный автомат для того чтобы бот знал последовательность действий
 from aiogram.dispatcher.filters.state import State, StatesGroup
+#Состояний для конечного автомата
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
-import database
+#MemoryStorage для того, чтобы хранить состояний автомата в опреативной памяти
+import database.database as db
+#библиотека для работы с бд
 import asyncio
+#Для создания асинхронных функций
 import datetime
+#Для работы с временем
 import sqlite3
+#Для работы с бд
 import logging
+from config_reader import config
+#Для логирования в файл mylog.log
 
-#Второй коммит
 
-# Создаем база данных
-database.create_table()
 
-# Указываем токен бота
-TOKEN = "7436005603:AAE1vrv7BmmYRXPeGrdv8aht2-CnI0Q4-0A"
+# Создаем базу данных
+db.create_table()
+
+#Создаём журнал в файле, где будут храниться лействия производимые в системе
+logging.basicConfig(format = u'%(levelname)-8s [%(asctime)s] %(message)s',
+                    level = logging.DEBUG, filename =u'log/mylog.log')
+
+
 
 # Создаем объект бота
-bot = Bot(token=TOKEN)
+bot = Bot(token=config.bot_token.get_secret_value())
+#Создаём диспетчер
 dp = Dispatcher(bot, storage=MemoryStorage())
 
-# Определяем состояния записи
+# Определяем состояния FMS для записи
 class States(StatesGroup):
     waiting_for_time = State()
     waiting_for_note = State()
 
-# Определяем состояния удаления
+# Определяем состояния FMS для удаления
 class DeleteNoteState(StatesGroup):
     waiting_for_delete = State()
 
@@ -34,6 +53,7 @@ class DeleteNoteState(StatesGroup):
 @dp.message_handler(commands=['start'])
 async def start(message: types.Message):
     await message.answer("Выберите действие:", reply_markup=get_keyboard(1))
+    #отвечаем на команду и отправляем кнопки для выбора действий
 
 # Функция для получения клавиатуры с кнопками
 def get_keyboard(st):
@@ -61,8 +81,8 @@ async def process_datetime(message: types.Message, state: FSMContext):
     global datetime_str
     try:
         datetime_str = message.text
-        datetime_obj = datetime.strptime(datetime_str, '%Y-%m-%d %H:%M')
-        await message.answer(f"💬 Введите текст заметки:")
+        datetime_obj = datetime.datetime.strptime(datetime_str, '%Y-%m-%d %H:%M')
+        await message.answer(f'💬 Введите текст заметки:')
         await States.waiting_for_note.set()
     except ValueError:
         if datetime_str == 'Отмена':
@@ -77,7 +97,7 @@ async def process_note(message: types.Message, state: FSMContext):
     note_text = message.text
     
     try:
-        database.add_note(
+        db.add_note(
             user_id = message.from_user.id,
             datetime = datetime_str,
             note = note_text
@@ -85,14 +105,14 @@ async def process_note(message: types.Message, state: FSMContext):
         await message.answer(f"✅ *Заметка сохранена:* {note_text}\n*Дата и время:* {datetime_str}", parse_mode = 'Markdown', reply_markup=get_keyboard(1))
     except Exception as e:
         await message.answer(f"❌ Ошибка при сохранении заметки: {e}", reply_markup=get_keyboard(1))
-        print(f"❌ Ошибка при сохранении заметки: {e}")
+        #print(f"❌ Ошибка при сохранении заметки: {e}")
 
     await state.finish()
 
 # Определяем обработчик команды "Список заметок"
 @dp.message_handler(lambda message: message.text == "Список заметок")
 async def list_notes(message: types.Message):
-    notes = database.get_notes(message.from_user.id)
+    notes = db.get_notes(message.from_user.id)
     if notes:
         response = "\n".join([f"{id}) *Дата и время:* {datetime} *Текст:* {note}" for id, datetime, note in notes])
         await message.answer(response, parse_mode = 'Markdown', reply_markup=get_keyboard(2))
@@ -113,13 +133,13 @@ async def process_delete_note_id(message: types.Message, state: FSMContext):
     note_id = message.text
     if note_id.isdigit():
         try:
-            database.delete_note(int(note_id))
+            db.delete_note(int(note_id))
             await message.answer(f"🗑 Заметка с номером {note_id} удалена.", reply_markup=get_keyboard(1))
-            database.rebuild_ids()
+            db.rebuild_ids()
             await state.finish()
         except Exception as e:
             await message.answer(f"❌ Ошибка при удалении заметки: {e}", reply_markup=get_keyboard(1))
-            print(f"❌ Ошибка при удалении заметки: {e}")
+
     else:
         if note_id == 'Отмена':
             await state.finish()
@@ -130,7 +150,7 @@ async def process_delete_note_id(message: types.Message, state: FSMContext):
 async def notify_users():
     while True:
         now = datetime.datetime.now().strftime('%Y-%m-%d %H:%M')
-        with sqlite3.connect('notes.db') as conn:
+        with sqlite3.connect('db/notes.db') as conn:
             cursor = conn.cursor()
             cursor.execute("SELECT user_id, note FROM notes WHERE datetime = ?", (now,))
             notes = cursor.fetchall()
@@ -138,7 +158,7 @@ async def notify_users():
                 await bot.send_message(user_id, f"🔔*Напоминание:* {note}", parse_mode = 'Markdown')
             cursor.execute("DELETE FROM notes WHERE datetime = ?", (now,))
             conn.commit()
-            database.rebuild_ids()
+            db.rebuild_ids()
         await asyncio.sleep(60)
 
 # Запускаем бота
