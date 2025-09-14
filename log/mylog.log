@@ -1392,3 +1392,110 @@ Traceback (most recent call last):
   File "C:\Users\georg\PycharmProjects\NoteBot\.venv\lib\site-packages\aiogram\bot\api.py", line 142, in make_request
     raise exceptions.NetworkError(f"aiohttp client throws an error: {e.__class__.__name__}: {e}")
 aiogram.utils.exceptions.NetworkError: Aiohttp client throws an error: ClientOSError: [Errno 1] [SSL: APPLICATION_DATA_AFTER_CLOSE_NOTIFY] application data after close notify (_ssl.c:2702)
+DEBUG    [2025-09-14 18:15:58,120] Using proactor: IocpProactor
+DEBUG    [2025-09-14 18:15:58,123] Make request: "getMe" with data: "{}" and files "None"
+DEBUG    [2025-09-14 18:15:58,294] Response for getMe: [200] "'{"ok":true,"result":{"id":8283224834,"is_bot":true,"first_name":"Note Bot","username":"NNNoteBot","can_join_groups":true,"can_read_all_group_messages":false,"supports_inline_queries":false,"can_connect_to_business":false,"has_main_web_app":false}}'"
+INFO     [2025-09-14 18:15:58,295] Bot: Note Bot [@NNNoteBot]
+DEBUG    [2025-09-14 18:15:58,295] Make request: "getWebhookInfo" with data: "{}" and files "None"
+DEBUG    [2025-09-14 18:15:58,347] Response for getWebhookInfo: [200] "'{"ok":true,"result":{"url":"","has_custom_certificate":false,"pending_update_count":0,"allowed_updates":["message"]}}'"
+DEBUG    [2025-09-14 18:15:58,347] Make request: "deleteWebhook" with data: "{'drop_pending_updates': True}" and files "None"
+DEBUG    [2025-09-14 18:15:58,396] Response for deleteWebhook: [200] "'{"ok":true,"result":true,"description":"Webhook is already deleted"}'"
+WARNING  [2025-09-14 18:15:58,396] Updates were skipped successfully.
+INFO     [2025-09-14 18:15:58,396] Start polling.
+DEBUG    [2025-09-14 18:15:58,396] Make request: "getWebhookInfo" with data: "{}" and files "None"
+DEBUG    [2025-09-14 18:15:58,445] Response for getWebhookInfo: [200] "'{"ok":true,"result":{"url":"","has_custom_certificate":false,"pending_update_count":0,"allowed_updates":["message"]}}'"
+DEBUG    [2025-09-14 18:15:58,445] Make request: "getUpdates" with data: "{'timeout': 20}" and files "None"
+INFO     [2025-09-14 18:16:00,119] Stop polling...
+WARNING  [2025-09-14 18:16:00,120] Goodbye!
+INFO     [2025-09-14 18:16:00,120] Bot: Note Bot [@NNNoteBot]
+DEBUG    [2025-09-14 18:16:00,120] Make request: "getWebhookInfo" with data: "{}" and files "None"
+DEBUG    [2025-09-14 18:16:00,273] Response for getWebhookInfo: [200] "'{"ok":true,"result":{"url":"","has_custom_certificate":false,"pending_update_count":0,"allowed_updates":["message"]}}'"
+DEBUG    [2025-09-14 18:16:00,273] Make request: "deleteWebhook" with data: "{'drop_pending_updates': True}" and files "None"
+DEBUG    [2025-09-14 18:16:00,324] Response for deleteWebhook: [200] "'{"ok":true,"result":true,"description":"Webhook is already deleted"}'"
+WARNING  [2025-09-14 18:16:00,324] Updates were skipped successfully.
+INFO     [2025-09-14 18:16:00,325] Start polling.
+DEBUG    [2025-09-14 18:16:00,325] Make request: "getWebhookInfo" with data: "{}" and files "None"
+DEBUG    [2025-09-14 18:16:00,376] Response for getWebhookInfo: [200] "'{"ok":true,"result":{"url":"","has_custom_certificate":false,"pending_update_count":0,"allowed_updates":["message"]}}'"
+DEBUG    [2025-09-14 18:16:00,376] Make request: "getUpdates" with data: "{'timeout': 20}" and files "None"
+ERROR    [2025-09-14 18:16:00,425] Cause exception while getting updates.
+Traceback (most recent call last):
+  File "C:\Users\georg\PycharmProjects\NoteBot\.venv\lib\site-packages\aiogram\bot\api.py", line 139, in make_request
+    async with session.post(url, data=req, **kwargs) as response:
+  File "C:\Users\georg\PycharmProjects\NoteBot\.venv\lib\site-packages\aiohttp\client.py", line 1167, in __aenter__
+    self._resp = await self._coro
+  File "C:\Users\georg\PycharmProjects\NoteBot\.venv\lib\site-packages\aiohttp\client.py", line 586, in _request
+    await resp.start(conn)
+  File "C:\Users\georg\PycharmProjects\NoteBot\.venv\lib\site-packages\aiohttp\client_reqrep.py", line 905, in start
+    message, payload = await protocol.read()  # type: ignore[union-attr]
+  File "C:\Users\georg\PycharmProjects\NoteBot\.venv\lib\site-packages\aiohttp\streams.py", line 616, in read
+    await self._waiter
+aiohttp.client_exceptions.ClientOSError: [Errno 1] [SSL: APPLICATION_DATA_AFTER_CLOSE_NOTIFY] application data after close notify (_ssl.c:2702)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\georg\PycharmProjects\NoteBot\.venv\lib\site-packages\aiogram\dispatcher\dispatcher.py", line 382, in start_polling
+    updates = await self.bot.get_updates(
+  File "C:\Users\georg\PycharmProjects\NoteBot\.venv\lib\site-packages\aiogram\bot\bot.py", line 110, in get_updates
+    result = await self.request(api.Methods.GET_UPDATES, payload)
+  File "C:\Users\georg\PycharmProjects\NoteBot\.venv\lib\site-packages\aiogram\bot\base.py", line 236, in request
+    return await api.make_request(await self.get_session(), self.server, self.__token, method, data, files,
+  File "C:\Users\georg\PycharmProjects\NoteBot\.venv\lib\site-packages\aiogram\bot\api.py", line 142, in make_request
+    raise exceptions.NetworkError(f"aiohttp client throws an error: {e.__class__.__name__}: {e}")
+aiogram.utils.exceptions.NetworkError: Aiohttp client throws an error: ClientOSError: [Errno 1] [SSL: APPLICATION_DATA_AFTER_CLOSE_NOTIFY] application data after close notify (_ssl.c:2702)
+DEBUG    [2025-09-14 18:16:33,318] Using proactor: IocpProactor
+DEBUG    [2025-09-14 18:16:33,320] Make request: "getMe" with data: "{}" and files "None"
+DEBUG    [2025-09-14 18:16:33,480] Response for getMe: [200] "'{"ok":true,"result":{"id":8283224834,"is_bot":true,"first_name":"Note Bot","username":"NNNoteBot","can_join_groups":true,"can_read_all_group_messages":false,"supports_inline_queries":false,"can_connect_to_business":false,"has_main_web_app":false}}'"
+INFO     [2025-09-14 18:16:33,481] Bot: Note Bot [@NNNoteBot]
+DEBUG    [2025-09-14 18:16:33,481] Make request: "getWebhookInfo" with data: "{}" and files "None"
+DEBUG    [2025-09-14 18:16:33,532] Response for getWebhookInfo: [200] "'{"ok":true,"result":{"url":"","has_custom_certificate":false,"pending_update_count":0,"allowed_updates":["message"]}}'"
+DEBUG    [2025-09-14 18:16:33,532] Make request: "deleteWebhook" with data: "{'drop_pending_updates': True}" and files "None"
+DEBUG    [2025-09-14 18:16:33,581] Response for deleteWebhook: [200] "'{"ok":true,"result":true,"description":"Webhook is already deleted"}'"
+WARNING  [2025-09-14 18:16:33,581] Updates were skipped successfully.
+INFO     [2025-09-14 18:16:33,581] Start polling.
+DEBUG    [2025-09-14 18:16:33,581] Make request: "getWebhookInfo" with data: "{}" and files "None"
+DEBUG    [2025-09-14 18:16:33,630] Response for getWebhookInfo: [200] "'{"ok":true,"result":{"url":"","has_custom_certificate":false,"pending_update_count":0,"allowed_updates":["message"]}}'"
+DEBUG    [2025-09-14 18:16:33,630] Make request: "getUpdates" with data: "{'timeout': 20}" and files "None"
+DEBUG    [2025-09-14 18:16:39,964] Response for getUpdates: [200] "'{"ok":true,"result":[{"update_id":513136112,\n"message":{"message_id":273,"from":{"id":6570278434,"is_bot":false,"first_name":"\\u0413\\u0435\\u043e\\u0440\\u0433\\u0438\\u0439","username":"gggeorgigg","language_code":"ru"},"chat":{"id":6570278434,"first_name":"\\u0413\\u0435\\u043e\\u0440\\u0433\\u0438\\u0439","username":"gggeorgigg","type":"private"},"date":1757863000,"text":"\\u0421\\u043f\\u0438\\u0441\\u043e\\u043a \\u0437\\u0430\\u043c\\u0435\\u0442\\u043e\\u043a"}}]}'"
+DEBUG    [2025-09-14 18:16:39,965] Received 1 updates.
+DEBUG    [2025-09-14 18:16:39,968] Make request: "sendMessage" with data: "{'chat_id': 6570278434, 'text': '8) *Дата и время:* efgre *Текст:* ergergrt\n10) *Дата и время:* 1990-13-33 25:66 *Текст:* gvorkknbr\n11) *Дата и время:* 2025-09-13 22:11 *Текст:* erf\n12) *Дата и время:* 2025-09-13 22:30 *Текст:* 1', 'parse_mode': 'Markdown', 'reply_markup': '{"keyboard": [["Список заметок"], ["Добавить заметку"], ["Удалить заметку"]], "resize_keyboard": true}'}" and files "None"
+DEBUG    [2025-09-14 18:16:40,048] Response for sendMessage: [200] "'{"ok":true,"result":{"message_id":274,"from":{"id":8283224834,"is_bot":true,"first_name":"Note Bot","username":"NNNoteBot"},"chat":{"id":6570278434,"first_name":"\\u0413\\u0435\\u043e\\u0440\\u0433\\u0438\\u0439","username":"gggeorgigg","type":"private"},"date":1757863000,"text":"8) \\u0414\\u0430\\u0442\\u0430 \\u0438 \\u0432\\u0440\\u0435\\u043c\\u044f: efgre \\u0422\\u0435\\u043a\\u0441\\u0442: ergergrt\\n10) \\u0414\\u0430\\u0442\\u0430 \\u0438 \\u0432\\u0440\\u0435\\u043c\\u044f: 1990-13-33 25:66 \\u0422\\u0435\\u043a\\u0441\\u0442: gvorkknbr\\n11) \\u0414\\u0430\\u0442\\u0430 \\u0438 \\u0432\\u0440\\u0435\\u043c\\u044f: 2025-09-13 22:11 \\u0422\\u0435\\u043a\\u0441\\u0442: erf\\n12) \\u0414\\u0430\\u0442\\u0430 \\u0438 \\u0432\\u0440\\u0435\\u043c\\u044f: 2025-09-13 22:30 \\u0422\\u0435\\u043a\\u0441\\u0442: 1","entities":[{"offset":3,"length":13,"type":"bold"},{"offset":23,"length":6,"type":"bold"},{"offset":43,"length":13,"type":"bold"},{"offset":74,"length":6,"type":"bold"},{"offset":95,"length":13,"type":"bold"},{"offset":126,"length":6,"type":"bold"},{"offset":141,"length":13,"type":"bold"},{"offset":172,"length":6,"type":"bold"}]}}'"
+DEBUG    [2025-09-14 18:16:40,048] Make request: "getUpdates" with data: "{'offset': 513136113, 'timeout': 20}" and files "None"
+INFO     [2025-09-14 18:16:48,937] Stop polling...
+WARNING  [2025-09-14 18:16:48,938] Goodbye!
+INFO     [2025-09-14 18:16:48,938] Bot: Note Bot [@NNNoteBot]
+DEBUG    [2025-09-14 18:16:48,938] Make request: "getWebhookInfo" with data: "{}" and files "None"
+DEBUG    [2025-09-14 18:16:49,100] Response for getWebhookInfo: [200] "'{"ok":true,"result":{"url":"","has_custom_certificate":false,"pending_update_count":0,"allowed_updates":["message"]}}'"
+DEBUG    [2025-09-14 18:16:49,100] Make request: "deleteWebhook" with data: "{'drop_pending_updates': True}" and files "None"
+DEBUG    [2025-09-14 18:16:49,154] Response for deleteWebhook: [200] "'{"ok":true,"result":true,"description":"Webhook is already deleted"}'"
+WARNING  [2025-09-14 18:16:49,154] Updates were skipped successfully.
+INFO     [2025-09-14 18:16:49,154] Start polling.
+DEBUG    [2025-09-14 18:16:49,155] Make request: "getWebhookInfo" with data: "{}" and files "None"
+DEBUG    [2025-09-14 18:16:49,207] Response for getWebhookInfo: [200] "'{"ok":true,"result":{"url":"","has_custom_certificate":false,"pending_update_count":0,"allowed_updates":["message"]}}'"
+DEBUG    [2025-09-14 18:16:49,208] Make request: "getUpdates" with data: "{'timeout': 20}" and files "None"
+ERROR    [2025-09-14 18:16:49,267] Cause exception while getting updates.
+Traceback (most recent call last):
+  File "C:\Users\georg\PycharmProjects\NoteBot\.venv\lib\site-packages\aiogram\bot\api.py", line 139, in make_request
+    async with session.post(url, data=req, **kwargs) as response:
+  File "C:\Users\georg\PycharmProjects\NoteBot\.venv\lib\site-packages\aiohttp\client.py", line 1167, in __aenter__
+    self._resp = await self._coro
+  File "C:\Users\georg\PycharmProjects\NoteBot\.venv\lib\site-packages\aiohttp\client.py", line 586, in _request
+    await resp.start(conn)
+  File "C:\Users\georg\PycharmProjects\NoteBot\.venv\lib\site-packages\aiohttp\client_reqrep.py", line 905, in start
+    message, payload = await protocol.read()  # type: ignore[union-attr]
+  File "C:\Users\georg\PycharmProjects\NoteBot\.venv\lib\site-packages\aiohttp\streams.py", line 616, in read
+    await self._waiter
+aiohttp.client_exceptions.ClientOSError: [Errno 1] [SSL: APPLICATION_DATA_AFTER_CLOSE_NOTIFY] application data after close notify (_ssl.c:2702)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\georg\PycharmProjects\NoteBot\.venv\lib\site-packages\aiogram\dispatcher\dispatcher.py", line 382, in start_polling
+    updates = await self.bot.get_updates(
+  File "C:\Users\georg\PycharmProjects\NoteBot\.venv\lib\site-packages\aiogram\bot\bot.py", line 110, in get_updates
+    result = await self.request(api.Methods.GET_UPDATES, payload)
+  File "C:\Users\georg\PycharmProjects\NoteBot\.venv\lib\site-packages\aiogram\bot\base.py", line 236, in request
+    return await api.make_request(await self.get_session(), self.server, self.__token, method, data, files,
+  File "C:\Users\georg\PycharmProjects\NoteBot\.venv\lib\site-packages\aiogram\bot\api.py", line 142, in make_request
+    raise exceptions.NetworkError(f"aiohttp client throws an error: {e.__class__.__name__}: {e}")
+aiogram.utils.exceptions.NetworkError: Aiohttp client throws an error: ClientOSError: [Errno 1] [SSL: APPLICATION_DATA_AFTER_CLOSE_NOTIFY] application data after close notify (_ssl.c:2702)

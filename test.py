@@ -5,9 +5,9 @@ def transpose(matrix):
 
 
 def remove_empty_columns(matrix):
-    transpose(matrix)
+    matrix = transpose(matrix)
     matrix = [row for row in matrix if any(row)]
-    transpose(matrix)
+    return transpose(matrix)
 
 
 def split_one_of_the_columns(matrix):
@@ -19,17 +19,26 @@ def split_one_of_the_columns(matrix):
                 m[i].append(matrix[i][j])
             else:
                 s = matrix[i][j].split("&")
-                m[i].append(s[0])
                 m[i].append(s[1])
+                m[i].append(s[0])
     return m
 
 
 def transform_cell_contents(matrix):
+    m = [[mail.replace('@', "[at]"),
+          f"{date[8:]}/{date[5:7]}/{date[2:4]}",
+          str(mark == "1").lower(),
+          f"{name.split(' ')[2]} {name.split(' ')[0]}"]
+         for mail, date, mark, name in matrix]
+    return m
 
 
 def main(matrix):
-    remove_empty_columns(matrix)
+    matrix = remove_empty_columns(matrix)
     matrix = split_one_of_the_columns(matrix)
+    matrix = transform_cell_contents(matrix)
+    matrix = transpose(matrix)
+    return matrix
 
 
 
@@ -39,3 +48,6 @@ matrix = [[None, "tamerlan70@yandex.ru", None, "0&2003/01/21", "Тамерлан
           [None, "vsevolod46@mail.ru", None, "0&2000/03/19", "Всеволод Ф. Гошисли"],
           [None, "anatolij89@rambler.ru", None, "1&2004/05/25", "Анатолий Г. Чицли"],
           [None, "facidi50@gmail.com", None, "0&2001/10/20", "Иван Ш. Фачиди"]]
+
+
+print("\n".join(main(matrix)))
